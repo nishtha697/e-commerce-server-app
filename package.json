@@ -1,0 +1,31 @@
+{
+  "type": "module",
+  "name": "e-commerce-server-app",
+  "version": "1.0.0",
+  "description": "E Commerce Web App Server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nishtha697/e-commerce-server-app.git"
+  },
+  "keywords": [
+    "Node",
+    "Server",
+    "HTTP",
+    "REST"
+  ],
+  "author": "Nishtha Goswami",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nishtha697/e-commerce-server-app/issues"
+  },
+  "homepage": "https://github.com/nishtha697/e-commerce-server-app#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.0.3"
+  }
+}
