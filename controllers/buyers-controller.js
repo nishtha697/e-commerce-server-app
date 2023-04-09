@@ -1,12 +1,8 @@
 import * as buyersDao from "../buyers/buyer-dao.js";
 
-const findBuyers = async (req, res) => {
-    const buyers = await buyersDao.findBuyers()
-    res.json(buyers);
-}
-
-const findBuyerById = async (req, res) => {
-    const buyer = await buyersDao.findBuyerById(req.params.uid)
+const findBuyerByUsernameAndPassword = async (req, res) => {
+    const {username, password} = req.query;
+    const buyer = await buyersDao.findBuyerByUsernameAndPassword(username, password)
     res.json(buyer);
 }
 
@@ -24,9 +20,20 @@ const updateBuyer = async (req, res) => {
     res.json(status);
 }
 
+const findBuyerById = async (req, res) => {
+    const buyer = await buyersDao.findBuyerById(req.params.uid)
+    res.json(buyer);
+}
+
+const findBuyers = async (req, res) => {
+    const buyers = await buyersDao.findBuyers()
+    res.json(buyers);
+}
+
 export default (app) => {
-    app.post('/api/buyers', createBuyer);
-    app.get('/api/buyers', findBuyers);
+    app.get('/api/buyers/authenticate', findBuyerByUsernameAndPassword);
     app.get('/api/buyers/:uid', findBuyerById);
+    app.post('/api/buyers', createBuyer);
     app.put('/api/buyers/:uid', updateBuyer);
+    app.get('/api/buyers', findBuyers);
 }
