@@ -1,7 +1,7 @@
 import * as buyersDao from "../buyers/buyer-dao.js";
 
 const findBuyerByUsernameAndPassword = async (req, res) => {
-    const {username, password} = req.query;
+    const { username, password } = req.query;
     const buyer = await buyersDao.findBuyerByUsernameAndPassword(username, password)
     res.json(buyer);
 }
@@ -9,8 +9,16 @@ const findBuyerByUsernameAndPassword = async (req, res) => {
 const createBuyer = async (req, res) => {
     const newBuyer = req.body;
     newBuyer._id = (new Date()).getTime();
-    const insertedBuyer = await buyersDao.createBuyer(newBuyer);
-    res.json(insertedBuyer);
+    try {
+        const insertedBuyer = await buyersDao.createBuyer(newBuyer);
+        res.json(insertedBuyer);
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            res.status(422).json({ errors: err.errors });
+        } else {
+            res.status(err.status).send(err.message);
+        }
+    }
 }
 
 const updateBuyer = async (req, res) => {

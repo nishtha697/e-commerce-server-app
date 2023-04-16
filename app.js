@@ -6,17 +6,24 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import cors from 'cors';
 
-mongoose.connect('mongodb+srv://GoswamiNGuptaS:Mp0Sp7qX0gyfcmtC@cs5200project.uko8lgd.mongodb.net/e-commerce?retryWrites=true&w=majority');
+const PORT = 4000
 
 const app = express()
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
-
 app.use(bodyParser.json())
 
 ProductController(app)
 SellerController(app)
 BuyerController(app)
 
-app.listen(4000)
+
+try {
+    await mongoose.connect('mongodb+srv://GoswamiNGuptaS:Mp0Sp7qX0gyfcmtC@cs5200project.uko8lgd.mongodb.net/e-commerce?retryWrites=true&w=majority')
+    console.log('Connected to MongoDB!')
+} catch (error) {
+    console.log(error);
+}
+
+app.listen(PORT, () => { console.log(`Server is listening on port ${PORT}...`) })
 
