@@ -1,32 +1,43 @@
 import * as sellersDao from "../sellers/seller-dao.js";
 
-const findSellers = async (req, res) => {
-    const sellers = await sellersDao.findSellers()
-    res.json(sellers);
-}
-
-const findSellerById = async (req, res) => {
-    const seller = await sellersDao.findSellerById(req.params.uid)
-    res.json(seller);
-}
-
-const createSeller = async (req, res) => {
+const createNewSeller = async (req, res) => {
     const newSeller = req.body;
     newSeller._id = (new Date()).getTime();
-    const insertedSeller = await sellersDao.createSeller(newSeller);
-    res.json(insertedSeller);
+    try {
+        const insertedSeller = await sellersDao.createSeller(newSeller);
+        res.status(200).json(insertedSeller);
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            res.status(422).json({ errors: err.errors });
+        } else if (err.code === 11000) {
+            // handle duplicate key error (E11000)
+            console.log(`Error: ${err.message}`);
+            res.status(422).json({ error: err.message });
+        } else {
+            console.log(`Error: ${err}`);
+            res.status(500).json({ error: err.message });
+        }
+    }
 }
 
-const updateSeller = async (req, res) => {
-    const sellerIdToUpdate = req.params.pid;
-    const updates = req.body;
-    const status = await sellersDao.updateSeller(sellerIdToUpdate, updates);
-    res.json(status);
+const authenticateSeller = async (req, res) => {
+    const { username, password } = req.query;
+    try {
+        const seller = await sellersDao.findSellerByUsernameAndPassword(username, password);
+        console.log(seller)
+        if (seller == null) {
+            res.status(404).json({ error: 'User not found' });
+        } else {
+            res.status(200).json(seller);
+        }
+    } catch (err) {
+        res.status(err.status).send(err.message);
+    }
+
 }
+
 
 export default (app) => {
-    app.post('/api/sellers', createSeller);
-    app.get('/api/sellers', findSellers);
-    app.get('/api/sellers/:uid', findSellerById);
-    app.put('/api/sellers/:uid', updateSeller);
+    app.post('/api/seller', createNewSeller);
+    app.get('/api/seller/authenticate', authenticateSeller);
 }
