@@ -30,7 +30,7 @@ const authenticateBuyer = async (req, res) => {
             res.status(200).json(buyer);
         }
     } catch (err) {
-        res.status(err.status).send(err.message);
+        res.status(500).json({ error: err.message });
     }
 
 }

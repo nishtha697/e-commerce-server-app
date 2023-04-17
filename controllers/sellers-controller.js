@@ -24,14 +24,14 @@ const authenticateSeller = async (req, res) => {
     const { username, password } = req.query;
     try {
         const seller = await sellersDao.findSellerByUsernameAndPassword(username, password);
-        console.log(seller)
         if (seller == null) {
             res.status(404).json({ error: 'User not found' });
         } else {
             res.status(200).json(seller);
         }
     } catch (err) {
-        res.status(err.status).send(err.message);
+        console.log(`Error: ${err}`);
+        res.status(500).send(err.message);
     }
 
 }
