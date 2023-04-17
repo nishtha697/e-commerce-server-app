@@ -9,5 +9,6 @@ const schema = mongoose.Schema({
     seller: { type: String, required: [true, "Seller required"] },
     inventory: { type: Number, required: [true, "Product inventory required"] },
     product_image: { type: String, required: [true, "Product image required"] },
+    unavailable: { type: Boolean, required: [false,""] },
 }, { collection: 'product' });
 export default schema;

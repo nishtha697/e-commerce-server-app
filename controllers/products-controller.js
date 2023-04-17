@@ -1,6 +1,5 @@
 import * as productsDao from '../products/product-dao.js'
 
-
 // const createNewProduct = async (req, res) => {
 //     const newProduct = req.body;
 //     newProduct.product_id = (new Date()).getTime();
@@ -41,17 +40,26 @@ const getProductsBySeller = async (req, res) => {
     }
 }
 
-// const updateProduct = async (req, res) => {
-//     const productIdToUpdate = req.params.pid;
-//     const updates = req.body;
-//     const status = await productsDao.updateProduct(productIdToUpdate, updates);
-//     res.json(status);
-// }
+const updateProduct = async (req, res) => {
+    const productIdToUpdate = req.params.pid;
+    const updates = req.body;
+    try {
+        const status = await productsDao.updateProduct(productIdToUpdate, updates);
+        res.status(200).json(status);
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            res.status(422).json({ errors: err.errors });
+        } else {
+            console.log(`Error: ${err}`);
+            res.status(500).json({ error: err.message });
+        }
+    }
+}
 
 export default (app) => {
     // app.post('/api/products', createNewProduct);
     app.get('/api/products', getAllProducts);
     app.get('/api/products/:pid', getProductsById);
     app.get('/api/products/seller/:seller', getProductsBySeller);
-    // app.put('/api/products/:pid', updateProduct);
+    app.put('/api/products/:pid', updateProduct);
 }
