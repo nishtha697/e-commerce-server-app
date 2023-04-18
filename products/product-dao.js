@@ -2,12 +2,12 @@ import productModel from './product-model.js';
 
 export const createProduct = (product) => productModel.create(product);
 export const findProducts = () => productModel.find();
+export const findProductsByFilter = (filter) => productModel.find(filter);
 export const findProductById = (pid) => productModel.findOne({ product_id: pid });
 export const findProductBySeller = (seller_username) => productModel.find({ seller: seller_username });
 export const updateProduct = (pid, product) => productModel.updateOne({ product_id: pid }, { $set: product }, { acknoledge: true })
 
-export const getCatgories = () => {
-    return productModel.aggregate([
+export const getCatgories = () => productModel.aggregate([
     {
         '$addFields': {
             'category0': { '$arrayElemAt': ['$category', 0] },
@@ -33,4 +33,12 @@ export const getCatgories = () => {
             '_id': 0, 'category1': '$_id', 'category2': { '$arrayToObject': '$category2' }
         }
     }
-])};
+])
+
+
+export const getSellers = () => productModel.aggregate(
+    [
+        { $group: { _id: '$seller' } },
+        { $project: { _id: 0, seller: '$_id' } }
+    ]
+)
