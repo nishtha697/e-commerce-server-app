@@ -36,8 +36,24 @@ const authenticateSeller = async (req, res) => {
 
 }
 
+const updateSellerProfile = async (req, res) => {
+    const sellerUsernameToUpdate = req.params.username;
+    const newProfile = req.body.newProfile;
+    try {
+        const response = await sellersDao.updateSeller(sellerUsernameToUpdate, newProfile);
+        res.status(200).json({ message: "Profile updated successfully", newProfile: response });
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            res.status(422).json({ errors: err.errors });
+        } else {
+            res.status(500).json({ error: err.message });
+        }
+    }
+}
+
 
 export default (app) => {
     app.post('/api/seller', createNewSeller);
     app.get('/api/seller/authenticate', authenticateSeller);
+    app.put('/api/seller/update-profile/:username', updateSellerProfile);
 }
