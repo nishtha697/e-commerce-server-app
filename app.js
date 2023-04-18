@@ -2,6 +2,8 @@ import express from 'express';
 import SellerController from "./controllers/sellers-controller.js"
 import BuyerController from "./controllers/buyers-controller.js"
 import ProductController from "./controllers/products-controller.js";
+import ShoppingCartController from "./controllers/shopping-cart-controller.js";
+
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import cors from 'cors';
@@ -16,6 +18,7 @@ app.use(bodyParser.json())
 ProductController(app)
 SellerController(app)
 BuyerController(app)
+ShoppingCartController(app)
 
 
 try {

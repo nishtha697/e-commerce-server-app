@@ -35,15 +35,22 @@ const authenticateBuyer = async (req, res) => {
 
 }
 
-// const updateBuyer = async (req, res) => {
-//     const buyerIdToUpdate = req.params.pid;
-//     const updates = req.body;
-//     const status = await buyersDao.updateBuyer(buyerIdToUpdate, updates);
-//     res.json(status);
-// }
+const updateBuyerAddress = async (req, res) => {
+    const buyerUsernameToUpdate = req.params.username;
+    const address = req.body.address;
+    console.log(address)
+    console.log(buyerUsernameToUpdate)
+
+    try {
+        await buyersDao.updateBuyer(buyerUsernameToUpdate, address);
+        res.status(200).json({message: "Address added successfully", address: address});
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
 
 export default (app) => {
     app.post('/api/buyers', createNewBuyer);
     app.get('/api/buyers/authenticate', authenticateBuyer);
-    // app.put('/api/buyers/:uid', updateBuyer);
+    app.put('/api/buyers/:username', updateBuyerAddress);
 }
