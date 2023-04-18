@@ -75,11 +75,55 @@ const getUniqueCatgories = async (req, res) => {
     }
 }
 
+const getUniqueSellers = async (req, res) => {
+    try {
+        const sellers = await productsDao.getSellers()
+        const sellerNames = sellers.map(seller => seller.seller);
+        res.status(200).json(sellerNames);
+    } catch (err) {
+        console.log(`Error: ${err}`);
+        res.status(500).json({ error: err.message });
+    }
+}
+
+const getFilteredProducts = async (req, res) => {
+    const { title, description, minPrice, maxPrice, category } = req.body
+    const query = {}
+    if (title && title !== "") query['title'] = { $regex: title, $options: "i" }
+    if (description && description !== "") query['description'] = { $regex: description, $options: "i" }
+    if (minPrice && minPrice > 0) query['price'] = { $gte: minPrice }
+    if (maxPrice && maxPrice > 0) query['price'] = { ...query['price'], $lte: maxPrice }
+    if (category && Object.keys(category).length > 0) {
+        const finalCategories = []
+        Object.keys(category).forEach(key => {
+            if (category[key]) {
+                finalCategories.push(category[key])
+            }
+        })
+        if (finalCategories.length > 0) query['category'] = { $all: finalCategories }
+    }
+    console.log('Filter Products Query', query)
+    try {
+        const filteredProducts = await productsDao.findProductsByFilter(query)
+        if (filteredProducts == null || filteredProducts.length === 0) {
+            res.status(404).json({ error: 'No products found!' });
+        } else {
+            res.status(200).json(filteredProducts);
+        }
+    } catch (err) {
+        console.log(`Error: ${err}`);
+        res.status(500).json({ error: err.message });
+    }
+}
+
 export default (app) => {
     app.post('/api/products', createNewProduct);
-    app.get('/api/products/categories', getUniqueCatgories);
-    app.get('/api/products', getAllProducts);
+    app.get('/api/products/all-categories', getUniqueCatgories);
+    app.get('/api/products/all-sellers', getUniqueSellers)
+    app.get('/api/products/all', getAllProducts);
+    app.post('/api/products/filtered', getFilteredProducts);
     app.get('/api/products/:pid', getProductsById);
     app.get('/api/products/seller/:seller', getProductsBySeller);
     app.put('/api/products/:pid', updateProduct);
+
 }
