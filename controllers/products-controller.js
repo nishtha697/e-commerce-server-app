@@ -1,11 +1,16 @@
 import * as productsDao from '../products/product-dao.js'
 
-// const createNewProduct = async (req, res) => {
-//     const newProduct = req.body;
-//     newProduct.product_id = (new Date()).getTime();
-//     const insertedProduct = await productsDao.createProduct(newProduct);
-//     res.json(insertedProduct);
-// }
+const createNewProduct = async (req, res) => {
+    const newProduct = req.body;
+    newProduct.product_id = (new Date()).getTime();
+    try {
+        const insertedProduct = await productsDao.createProduct(newProduct);
+        res.status(200).json(insertedProduct);
+    } catch (err) {
+        console.log(`Error: ${err}`);
+        res.status(500).json({ error: err.message });
+    }
+}
 
 const getAllProducts = async (req, res) => {
     const products = await productsDao.findProducts()
@@ -56,8 +61,23 @@ const updateProduct = async (req, res) => {
     }
 }
 
+const getUniqueCatgories = async (req, res) => {
+    try {
+        const values = await productsDao.getCatgories()
+        let result = {}
+        values.forEach(category => {
+            result[category.category1] = category.category2
+        })
+        res.status(200).json(result);
+    } catch (err) {
+        console.log(`Error: ${err}`);
+        res.status(500).json({ error: err.message });
+    }
+}
+
 export default (app) => {
-    // app.post('/api/products', createNewProduct);
+    app.post('/api/products', createNewProduct);
+    app.get('/api/products/categories', getUniqueCatgories);
     app.get('/api/products', getAllProducts);
     app.get('/api/products/:pid', getProductsById);
     app.get('/api/products/seller/:seller', getProductsBySeller);
