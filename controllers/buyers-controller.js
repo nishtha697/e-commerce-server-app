@@ -35,22 +35,73 @@ const authenticateBuyer = async (req, res) => {
 
 }
 
+const addBuyerAddress = async (req, res) => {
+    const buyerUsernameToUpdate = req.params.username;
+    const address = req.body.address;
+    try {
+        await buyersDao.addBuyerAddress(buyerUsernameToUpdate, address);
+        res.status(200).json({ message: "Address added successfully", address: address });
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            res.status(422).json({ errors: err.errors });
+        } else {
+            res.status(500).json({ error: err.message });
+        }
+    }
+}
+
+const deleteBuyerAddress = async (req, res) => {
+    const buyerUsernameToUpdate = req.params.username;
+    const addressId = req.body.addressId;
+    try {
+        await buyersDao.deleteBuyerAddress(buyerUsernameToUpdate, addressId);
+        res.status(200).json({ message: "Address deleted successfully", addressId: addressId });
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            res.status(422).json({ errors: err.errors });
+        } else {
+            res.status(500).json({ error: err.message });
+        }
+
+    }
+}
+
 const updateBuyerAddress = async (req, res) => {
     const buyerUsernameToUpdate = req.params.username;
     const address = req.body.address;
-    console.log(address)
-    console.log(buyerUsernameToUpdate)
-
     try {
-        await buyersDao.updateBuyer(buyerUsernameToUpdate, address);
-        res.status(200).json({message: "Address added successfully", address: address});
+        await buyersDao.updateBuyerAddress(buyerUsernameToUpdate, address);
+        res.status(200).json({ message: "Address updated successfully", address: address });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        if (err.name === 'ValidationError') {
+            res.status(422).json({ errors: err.errors });
+        } else {
+            res.status(500).json({ error: err.message });
+        }
+
+    }
+}
+
+const updateBuyerProfile = async (req, res) => {
+    const buyerUsernameToUpdate = req.params.username;
+    const newProfile = req.body.newProfile;
+    try {
+        const response = await buyersDao.updateBuyer(buyerUsernameToUpdate, newProfile);
+        res.status(200).json({ message: "Profile updated successfully", newProfile: response });
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            res.status(422).json({ errors: err.errors });
+        } else {
+            res.status(500).json({ error: err.message });
+        }
     }
 }
 
 export default (app) => {
     app.post('/api/buyers', createNewBuyer);
     app.get('/api/buyers/authenticate', authenticateBuyer);
-    app.put('/api/buyers/:username', updateBuyerAddress);
+    app.put('/api/buyers/add-address/:username', addBuyerAddress);
+    app.put('/api/buyers/update-address/:username', updateBuyerAddress);
+    app.put('/api/buyers/delete-address/:username', deleteBuyerAddress);
+    app.put('/api/buyers/update-profile/:username', updateBuyerProfile);
 }
