@@ -40,7 +40,7 @@ const findOrdersByBuyerUsername = async (req, res) => {
 const findOrderBySeller = async (req, res) => {
     console.log("By seller");
 
-    const { seller_username } = req.query;
+    const { seller_username } = req.params;
     try {
         const orders = await ordersDao.findOrderBySeller(seller_username);
         res.status(200).json(orders);
@@ -52,7 +52,7 @@ const findOrderBySeller = async (req, res) => {
 const findOrderAndSpecificShipmentBySeller = async (req, res) => {
     console.log("By specific shipment");
 
-    const { seller_username } = req.query;
+    const { seller_username } = req.params;
     try {
         const orders = await ordersDao.findOrderAndSpecificShipmentBySeller(seller_username);
         res.status(200).json(orders);
@@ -64,7 +64,7 @@ const findOrderAndSpecificShipmentBySeller = async (req, res) => {
 const updateOrderShipmentStatus = async (req, res) => {
     console.log("update");
 
-    const { orderId, shipmentId } = req.query;
+    const { orderId, shipmentId } = req.params;
     const { status } = req.body;
     try {
         const result = await ordersDao.updateOrderShipmentStatus(orderId, shipmentId, status);
@@ -77,7 +77,7 @@ const updateOrderShipmentStatus = async (req, res) => {
 const cancelAllShipments = async (req, res) => {
     console.log("cancel");
 
-    const { orderId } = req.query;
+    const { orderId } = req.params;
     try {
         const result = await ordersDao.cancelAllShipments(orderId);
         res.status(200).json({ message: "All shipments in the order have been cancelled", result });

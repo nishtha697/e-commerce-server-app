@@ -69,8 +69,8 @@ const findSellerByUsername = async (req, res) => {
 
 
 export default (app) => {
-    app.get('/api/seller/:username', findSellerByUsername);
     app.post('/api/seller', createNewSeller);
     app.get('/api/seller/authenticate', authenticateSeller);
+    app.get('/api/seller/:username', findSellerByUsername);
     app.put('/api/seller/update-profile/:username', updateSellerProfile);
 }
