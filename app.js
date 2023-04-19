@@ -3,6 +3,7 @@ import SellerController from "./controllers/sellers-controller.js"
 import BuyerController from "./controllers/buyers-controller.js"
 import ProductController from "./controllers/products-controller.js";
 import ShoppingCartController from "./controllers/shopping-cart-controller.js";
+import OrdersController from "./controllers/orders-controller.js";
 
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
@@ -19,6 +20,7 @@ ProductController(app)
 SellerController(app)
 BuyerController(app)
 ShoppingCartController(app)
+OrdersController(app)
 
 
 try {
