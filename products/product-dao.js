@@ -34,11 +34,3 @@ export const getCatgories = () => productModel.aggregate([
         }
     }
 ])
-
-
-export const getSellers = () => productModel.aggregate(
-    [
-        { $group: { _id: '$seller' } },
-        { $project: { _id: 0, seller: '$_id' } }
-    ]
-)

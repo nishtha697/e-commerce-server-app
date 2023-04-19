@@ -11,11 +11,8 @@ const createOrder = async (req, res) => {
         if (err.name === 'ValidationError') {
             res.status(422).json({ errors: err.errors });
         } else if (err.code === 11000) {
-            // handle duplicate key error (E11000)
-            console.log(`Error: ${err.message}`);
             res.status(422).json({ error: err.message });
         } else {
-            console.log(`Error: ${err}`);
             res.status(500).json({ error: err.message });
         }
     }

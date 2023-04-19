@@ -11,10 +11,8 @@ const createNewBuyer = async (req, res) => {
             res.status(422).json({ errors: err.errors });
         } else if (err.code === 11000) {
             // handle duplicate key error (E11000)
-            console.log(`Error: ${err.message}`);
             res.status(422).json({ error: err.message });
         } else {
-            console.log(`Error: ${err}`);
             res.status(500).json({ error: err.message });
         }
     }
@@ -97,6 +95,16 @@ const updateBuyerProfile = async (req, res) => {
     }
 }
 
+const deleteBuyer = async (req, res) => {
+    const { username } = req.query;
+    try {
+        const buyer = await buyersDao.deleteBuyer(username);
+        res.status(200).json(buyer);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
 export default (app) => {
     app.post('/api/buyers', createNewBuyer);
     app.get('/api/buyers/authenticate', authenticateBuyer);
@@ -104,4 +112,5 @@ export default (app) => {
     app.put('/api/buyers/update-address/:username', updateBuyerAddress);
     app.put('/api/buyers/delete-address/:username', deleteBuyerAddress);
     app.put('/api/buyers/update-profile/:username', updateBuyerProfile);
+    app.get('/api/buyers/delete', deleteBuyer);
 }

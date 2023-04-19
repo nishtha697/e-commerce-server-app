@@ -1,6 +1,7 @@
 import buyerModel from './buyer-model.js';
 
 export const createBuyer = (buyer) => buyerModel.create(buyer);
+export const deleteBuyer = (username) => buyerModel.findOneAndDelete({ username: username });
 export const findBuyerByUsernameAndPassword = (username, password) => buyerModel.findOne({ username: username, password: password });
 
 export const addBuyerAddress = (username, address) => buyerModel.findOneAndUpdate(

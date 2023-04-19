@@ -7,7 +7,6 @@ const createNewProduct = async (req, res) => {
         const insertedProduct = await productsDao.createProduct(newProduct);
         res.status(200).json(insertedProduct);
     } catch (err) {
-        console.log(`Error: ${err}`);
         res.status(500).json({ error: err.message });
     }
 }
@@ -26,7 +25,6 @@ const getProductsById = async (req, res) => {
             res.status(200).json(product);
         }
     } catch (err) {
-        console.log(`Error: ${err}`);
         res.status(500).json({ error: err.message });
     }
 }
@@ -40,7 +38,6 @@ const getProductsBySeller = async (req, res) => {
             res.status(200).json(products);
         }
     } catch (err) {
-        console.log(`Error: ${err}`);
         res.status(500).json({ error: err.message });
     }
 }
@@ -55,7 +52,6 @@ const updateProduct = async (req, res) => {
         if (err.name === 'ValidationError') {
             res.status(422).json({ errors: err.errors });
         } else {
-            console.log(`Error: ${err}`);
             res.status(500).json({ error: err.message });
         }
     }
@@ -70,18 +66,6 @@ const getUniqueCatgories = async (req, res) => {
         })
         res.status(200).json(result);
     } catch (err) {
-        console.log(`Error: ${err}`);
-        res.status(500).json({ error: err.message });
-    }
-}
-
-const getUniqueSellers = async (req, res) => {
-    try {
-        const sellers = await productsDao.getSellers()
-        const sellerNames = sellers.map(seller => seller.seller);
-        res.status(200).json(sellerNames);
-    } catch (err) {
-        console.log(`Error: ${err}`);
         res.status(500).json({ error: err.message });
     }
 }
@@ -102,7 +86,6 @@ const getFilteredProducts = async (req, res) => {
         })
         if (finalCategories.length > 0) query['category'] = { $all: finalCategories }
     }
-    console.log('Filter Products Query', query)
     try {
         const filteredProducts = await productsDao.findProductsByFilter(query)
         if (filteredProducts == null || filteredProducts.length === 0) {
@@ -111,7 +94,6 @@ const getFilteredProducts = async (req, res) => {
             res.status(200).json(filteredProducts);
         }
     } catch (err) {
-        console.log(`Error: ${err}`);
         res.status(500).json({ error: err.message });
     }
 }
@@ -119,7 +101,6 @@ const getFilteredProducts = async (req, res) => {
 export default (app) => {
     app.post('/api/products', createNewProduct);
     app.get('/api/products/all-categories', getUniqueCatgories);
-    app.get('/api/products/all-sellers', getUniqueSellers)
     app.get('/api/products/all', getAllProducts);
     app.post('/api/products/filtered', getFilteredProducts);
     app.get('/api/products/:pid', getProductsById);

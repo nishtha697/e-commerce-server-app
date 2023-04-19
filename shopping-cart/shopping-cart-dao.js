@@ -1,6 +1,5 @@
 import shoppingCartModel from './shopping-cart-model.js';
 
-export const createShoppingCart = (shoppingCart) => shoppingCartModel.create(shoppingCart);
 export const findShoppingCartByUsername = (username) => shoppingCartModel.findOne({ username: username });
 export const addProductToShoppingCart = async (username, product) => {
     const existingProduct = await shoppingCartModel.findOne({ username: username, "products.productId": product.productId });
@@ -45,7 +44,6 @@ export const updateProductQuantity = (username, productId, newQuantity) => {
             }
         })
         .catch((err) => {
-            console.log(`Error: ${err}`);
             throw err;
         });
 };
