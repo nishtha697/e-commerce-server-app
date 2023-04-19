@@ -23,8 +23,8 @@ export const findOrderAndSpecificShipmentBySeller = (seller_username) => orderMo
                                                                                     'buyer_username': 1,
                                                                                     'totalPrice': 1,
                                                                                     'paymentMethod': 1,
-                                                                                    'price': 1,
-                                                                                    'orderDate': 1
+                                                                                    'shippingAddress': 1,
+                                                                                    'orderDate': 1,
                                                                                 });
 
 export const updateOrderShipmentStatus = (orderId, shipmentId, status) => {

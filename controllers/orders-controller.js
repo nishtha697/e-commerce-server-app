@@ -55,6 +55,7 @@ const findOrderAndSpecificShipmentBySeller = async (req, res) => {
     const { seller_username } = req.params;
     try {
         const orders = await ordersDao.findOrderAndSpecificShipmentBySeller(seller_username);
+        console.log(orders)
         res.status(200).json(orders);
     } catch (err) {
         res.status(500).json({ error: err.message });
