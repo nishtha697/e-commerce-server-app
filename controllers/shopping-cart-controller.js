@@ -77,9 +77,6 @@ const updateProductQuantity = async (req, res) => {
     const username = req.params.username;
     const productId = req.params.productId;
     const newQuantity = req.body.quantity;
-    console.log(username)
-    console.log(productId)
-    console.log(newQuantity)
 
     try {
         const updateResult = await shoppingCartDao.updateProductQuantity(username, productId, newQuantity);
