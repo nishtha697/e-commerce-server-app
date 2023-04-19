@@ -4,6 +4,7 @@ import BuyerController from "./controllers/buyers-controller.js"
 import ProductController from "./controllers/products-controller.js";
 import ShoppingCartController from "./controllers/shopping-cart-controller.js";
 import OrdersController from "./controllers/orders-controller.js";
+import ChartController from "./controllers/aggregation-controller.js";
 
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
@@ -21,6 +22,7 @@ SellerController(app)
 BuyerController(app)
 ShoppingCartController(app)
 OrdersController(app)
+ChartController(app)
 
 
 try {
