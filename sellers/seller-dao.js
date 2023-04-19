@@ -8,7 +8,6 @@ export const updateSeller = (username, newProfile) => sellerModel.findOneAndUpda
     { new: true }
 );
 
-// export const updateSeller = (sid, seller) => sellerModel.updateOne({ username: sid }, { $set: seller })
 export const findSellerByUsername = async (username) => {
     return sellerModel.findOne({ username }).select('name email phone business_address');
 };
