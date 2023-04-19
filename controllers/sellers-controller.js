@@ -10,11 +10,8 @@ const createNewSeller = async (req, res) => {
         if (err.name === 'ValidationError') {
             res.status(422).json({ errors: err.errors });
         } else if (err.code === 11000) {
-            // handle duplicate key error (E11000)
-            console.log(`Error: ${err.message}`);
             res.status(422).json({ error: err.message });
         } else {
-            console.log(`Error: ${err}`);
             res.status(500).json({ error: err.message });
         }
     }
@@ -30,7 +27,6 @@ const authenticateSeller = async (req, res) => {
             res.status(200).json(seller);
         }
     } catch (err) {
-        console.log(`Error: ${err}`);
         res.status(500).send(err.message);
     }
 
@@ -62,7 +58,6 @@ const findSellerByUsername = async (req, res) => {
             res.status(200).json({ name, email, phone, business_address });
         }
     } catch (err) {
-        console.log(`Error: ${err}`);
         res.status(500).send(err.message);
     }
 }

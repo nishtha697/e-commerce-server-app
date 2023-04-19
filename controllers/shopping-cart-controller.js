@@ -1,16 +1,5 @@
 import * as shoppingCartDao from '../shopping-cart/shopping-cart-dao.js'
 
-const createNewShoppingCart = async (req, res) => {
-    const newShoppingCart = req.body;
-    try {
-        const insertedShoppingCart = await shoppingCartDao.createShoppingCart(newShoppingCart);
-        res.status(200).json(insertedShoppingCart);
-    } catch (err) {
-        console.log(`Error: ${err}`);
-        res.status(500).json({ error: err.message });
-    }
-}
-
 const deleteShoppingCartByUsername = async (req, res) => {
     const username = req.params.username;
     try {
@@ -21,7 +10,6 @@ const deleteShoppingCartByUsername = async (req, res) => {
             res.status(200).json({ message: "Shopping cart deleted successfully" });
         }
     } catch (err) {
-        console.log(`Error: ${err}`);
         res.status(500).json({ error: err.message });
     }
 };
@@ -36,7 +24,6 @@ const findShoppingCartByUsername = async (req, res) => {
             res.status(200).json(shoppingCart);
         }
     } catch (err) {
-        console.log(`Error: ${err}`);
         res.status(500).json({ error: err.message });
     }
 };
@@ -52,7 +39,6 @@ const addProductToShoppingCart = async (req, res) => {
             res.status(200).json({ message: "Product added to shopping cart successfully" });
         }
     } catch (err) {
-        console.log(`Error: ${err}`);
         res.status(500).json({ error: err.message });
     }
 };
@@ -68,7 +54,6 @@ const deleteProductFromShoppingCart = async (req, res) => {
             res.status(200).json({ message: "Product deleted from shopping cart successfully", deletedProductId: productId });
         }
     } catch (err) {
-        console.log(`Error: ${err}`);
         res.status(500).json({ error: err.message });
     }
 };
@@ -86,13 +71,11 @@ const updateProductQuantity = async (req, res) => {
             res.status(200).json({ message: "Product quantity updated successfully", productId: productId, quantity: newQuantity });
         }
     } catch (err) {
-        console.log(`Error: ${err}`);
         res.status(500).json({ error: err.message });
     }
 };
 
 export default (app) => {
-    app.post('/api/shopping-cart', createNewShoppingCart);
     app.get('/api/shopping-cart/:username', findShoppingCartByUsername);
     app.delete('/api/shopping-cart/:username', deleteShoppingCartByUsername);
     app.put('/api/shopping-cart/:username/add', addProductToShoppingCart);
