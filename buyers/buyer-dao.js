@@ -21,6 +21,6 @@ export const deleteBuyerAddress = (username, addressId) => buyerModel.findOneAnd
 
 export const updateBuyer = (username, newProfile) => buyerModel.findOneAndUpdate(
     { username: username },
-    { ...newProfile},
+    { ...newProfile },
     { new: true }
 );

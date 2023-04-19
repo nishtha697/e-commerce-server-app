@@ -2,7 +2,7 @@ import * as productsDao from '../products/product-dao.js'
 
 const createNewProduct = async (req, res) => {
     const newProduct = req.body;
-    newProduct.product_id = (new Date()).getTime();
+    newProduct.product_id = Date.now()
     try {
         const insertedProduct = await productsDao.createProduct(newProduct);
         res.status(200).json(insertedProduct);

@@ -2,7 +2,7 @@ import * as buyersDao from "../buyers/buyer-dao.js";
 
 const createNewBuyer = async (req, res) => {
     const newBuyer = req.body;
-    newBuyer._id = (new Date()).getTime();
+    newBuyer._id = Date.now()
     try {
         const insertedBuyer = await buyersDao.createBuyer(newBuyer);
         res.status(200).json(insertedBuyer);

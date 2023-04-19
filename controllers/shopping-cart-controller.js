@@ -65,7 +65,7 @@ const deleteProductFromShoppingCart = async (req, res) => {
         if (updateResult.nModified === 0) {
             res.status(404).json({ error: "Shopping cart or product not found" });
         } else {
-            res.status(200).json({ message: "Product deleted from shopping cart successfully", deletedProductId: productId } );
+            res.status(200).json({ message: "Product deleted from shopping cart successfully", deletedProductId: productId });
         }
     } catch (err) {
         console.log(`Error: ${err}`);

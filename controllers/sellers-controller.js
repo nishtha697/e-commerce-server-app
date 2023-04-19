@@ -2,7 +2,7 @@ import * as sellersDao from "../sellers/seller-dao.js";
 
 const createNewSeller = async (req, res) => {
     const newSeller = req.body;
-    newSeller._id = (new Date()).getTime();
+    newSeller._id = Date.now()
     try {
         const insertedSeller = await sellersDao.createSeller(newSeller);
         res.status(200).json(insertedSeller);
@@ -51,9 +51,25 @@ const updateSellerProfile = async (req, res) => {
     }
 }
 
+const findSellerByUsername = async (req, res) => {
+    const { username } = req.params;
+    try {
+        const seller = await sellersDao.findSellerByUsername(username);
+        if (!seller) {
+            res.status(404).json({ error: "Seller not found" });
+        } else {
+            const { name, email, phone, business_address } = seller;
+            res.status(200).json({ name, email, phone, business_address });
+        }
+    } catch (err) {
+        console.log(`Error: ${err}`);
+        res.status(500).send(err.message);
+    }
+}
 
 export default (app) => {
     app.post('/api/seller', createNewSeller);
     app.get('/api/seller/authenticate', authenticateSeller);
     app.put('/api/seller/update-profile/:username', updateSellerProfile);
+    app.get('/api/seller/:username', findSellerByUsername);
 }
