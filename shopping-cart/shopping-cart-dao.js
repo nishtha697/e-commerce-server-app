@@ -48,8 +48,6 @@ export const updateProductQuantity = (username, productId, newQuantity) => {
         });
 };
 
-
-
 export const deleteShoppingCart = (username) => {
     return shoppingCartModel.deleteOne({ username: username });
 };

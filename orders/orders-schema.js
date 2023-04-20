@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import addressSchema from './address-schema';
+import addressSchema from './address-schema.js';
 
 const shipmentSchema = new mongoose.Schema({
     shipmentId: {

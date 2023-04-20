@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import addressSchema from '../orders/address-schema';
+import addressSchema from '../orders/address-schema.js';
 
 const schema = mongoose.Schema({
     _id: {
