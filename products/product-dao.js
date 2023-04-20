@@ -4,7 +4,6 @@ export const createProduct = (product) => productModel.create(product);
 export const findProducts = () => productModel.find();
 export const findProductsByFilter = (filter) => productModel.find(filter);
 export const findProductById = (pid) => productModel.findOne({ product_id: pid });
-export const findProductBySeller = (seller_username) => productModel.find({ seller: seller_username });
 export const updateProduct = (pid, product) => productModel.updateOne({ product_id: pid }, { $set: product }, { acknoledge: true })
 
 export const getCatgories = () => productModel.aggregate([
@@ -31,6 +30,33 @@ export const getCatgories = () => productModel.aggregate([
     }, {
         '$project': {
             '_id': 0, 'category1': '$_id', 'category2': { '$arrayToObject': '$category2' }
+        }
+    }
+])
+
+
+export const findProductBySeller = (seller_username) => productModel.aggregate([
+    {
+        '$match': {
+            seller: seller_username
+        }
+    },
+    {
+        '$lookup': {
+            'from': 'order',
+            'localField': 'product_id',
+            'foreignField': 'shipments.products.product_id',
+            'as': 'orders'
+        }
+    }, {
+        '$addFields': {
+            'order_count': {
+                '$size': '$orders'
+            }
+        }
+    }, {
+        '$project': {
+            'orders': 0
         }
     }
 ])
