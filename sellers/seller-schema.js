@@ -32,6 +32,6 @@ const schema = mongoose.Schema({
         minlength: [10, 'Minimum phone length is 10 characters'],
         maxlength: [10, 'Maximum phone length is 10 characters']
     },
-}, { collection: 'seller' });
+}, { collection: 'seller', versionKey: false  });
 
 export default schema;

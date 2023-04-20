@@ -54,6 +54,6 @@ const orderSchema = new mongoose.Schema({
         type: addressSchema,
         required: [true, 'Shipping address is required']
     },
-}, { collection: 'order' });
+}, { collection: 'order', versionKey: false });
 
 export default orderSchema;

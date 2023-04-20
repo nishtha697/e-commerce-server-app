@@ -15,6 +15,6 @@ const schema = mongoose.Schema({
             required: [true, "Quantity is required"]
         }
     }]
-}, { collection: 'shoppingcart' });
+}, { collection: 'shoppingcart', versionKey: false });
 
 export default schema;

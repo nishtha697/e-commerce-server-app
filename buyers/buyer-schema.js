@@ -51,6 +51,6 @@ const schema = mongoose.Schema({
         }
     },
 
-}, { collection: 'buyer' });
+}, { collection: 'buyer', versionKey: false });
 
 export default schema;

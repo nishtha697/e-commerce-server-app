@@ -41,6 +41,6 @@ const schema = mongoose.Schema({
         type: Boolean,
         required: [false, ""]
     },
-}, { collection: 'product' });
+}, { collection: 'product', versionKey: false });
 
 export default schema;
