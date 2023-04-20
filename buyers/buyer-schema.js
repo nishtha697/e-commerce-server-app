@@ -37,7 +37,7 @@ const schema = mongoose.Schema({
         minLength: 1
     },
     phone: {
-        type: Number,
+        type: String,
         required: [true, "Buyer phone number required"],
         minlength: [10, 'Minimum phone length is 10 characters'],
         maxlength: [10, 'Maximum phone length is 10 characters']

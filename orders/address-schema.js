@@ -1,6 +1,9 @@
 import mongoose from 'mongoose';
 
 const addressSchema = new mongoose.Schema({
+    incareof:{
+        type: String,
+    },
     address1: {
         type: String,
         required: [true, 'Address line 1 is required']
@@ -17,7 +20,7 @@ const addressSchema = new mongoose.Schema({
         required: [true, 'State is required']
     },
     zipcode: {
-        type: Number,
+        type: String,
         required: [true, 'Zipcode is required']
     },
 });
