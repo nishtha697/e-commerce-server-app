@@ -5,6 +5,8 @@ import ProductController from "./controllers/products-controller.js";
 import ShoppingCartController from "./controllers/shopping-cart-controller.js";
 import OrdersController from "./controllers/orders-controller.js";
 import ChartController from "./controllers/aggregation-controller.js";
+import dotenv from 'dotenv';
+dotenv.config();
 
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
@@ -26,7 +28,8 @@ ChartController(app)
 
 
 try {
-    await mongoose.connect('mongodb+srv://GoswamiNGuptaS:Mp0Sp7qX0gyfcmtC@cs5200project.uko8lgd.mongodb.net/e-commerce?retryWrites=true&w=majority')
+    const mongoUri = process.env.MONGO_URI;
+    await mongoose.connect(mongoUri)
     console.log('Connected to MongoDB!')
 } catch (error) {
     console.log(error);
