@@ -16,13 +16,28 @@ export const addProductToShoppingCart = async (username, product) => {
     }
 };
 
+export const deleteProductFromShoppingCart = async (username, productId) => {
+    try {
+        const shoppingCart = await shoppingCartModel.findOne({ username: username });
 
-export const deleteProductFromShoppingCart = (username, productId) => {
-    return shoppingCartModel.updateOne(
-        { username: username },
-        { $pull: { products: { productId: productId } } },
-        { acknoledge: true }
-    );
+        if (!shoppingCart) {
+            throw new Error('Shopping cart not found');
+        }
+
+        shoppingCart.products = shoppingCart.products.filter(
+            (product) => product.productId !== Number(productId)
+        );
+
+        if (shoppingCart.products.length === 0) {
+            await shoppingCartModel.deleteOne({ username: username });
+            return { nModified: 1, message: 'Deleted empty shopping cart' };
+        } else {
+            const updatedCart = await shoppingCart.save();
+            return { nModified: 1, updatedCart: updatedCart };
+        }
+    } catch (error) {
+        throw error;
+    }
 };
 
 export const updateProductQuantity = (username, productId, newQuantity) => {
